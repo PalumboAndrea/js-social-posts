@@ -45,7 +45,18 @@ h1 {
 }
 
 .post-meta__icon {
-    margin-right: 24px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post-meta__icon p {
+    padding: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+    border: 1px solid grey;
+    border-radius: 50%;
 }
 
 .post-meta__data {
@@ -77,6 +88,7 @@ h1 {
     overflow: hidden;
     border-radius: 50%;
 }
+
 
 .profile-pic-default span {
     font-weight: bold;
@@ -123,3 +135,4 @@ h1 {
     color: #0CD977;
     cursor: default;
 }
+

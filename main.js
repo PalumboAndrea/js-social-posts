@@ -55,3 +55,131 @@ const posts = [
         "created": "2021-03-05"
     }
 ];
+
+let postList = document.getElementById('container');
+
+let likeCounter = 0;
+
+
+/********************************************************************
+// 'for each' to associate the list elements with the HTML elements
+*********************************************************************/
+
+posts.forEach( (element) => {
+
+    let idPost = element.id;
+    
+    let post = document.createElement('div');
+    post.classList.add('post');
+    postList.append(post);
+
+    let postHeader = document.createElement('div');
+    postHeader.classList.add('post__header');
+    post.append(postHeader);
+
+    let postMeta = document.createElement('div');
+    postMeta.classList.add('post-meta');
+    postHeader.append(postMeta);
+
+    let postMetaIcon = document.createElement('div');
+    postMetaIcon.classList.add('post-meta__icon');
+    postMeta.append(postMetaIcon);
+    // da associare ad author ==> image
+    let profilePic = document.createElement('img');
+    postMetaIcon.append(profilePic);
+    profilePic.classList.add('profile-pic');
+    if (element.author.image !== null){
+        profilePic.setAttribute('src', element.author.image);
+    } else {
+        let profilePicNull = document.createElement('p');
+        profilePicNull.classList.add('profil-pic-null')
+        postMetaIcon.append(profilePicNull);
+        let initial = element.author.name.split(' ');
+        profilePicNull.innerHTML = initial[0].charAt(0) + ' ' + initial[1].charAt(0);
+    }
+   
+
+    let postMetaData = document.createElement('div');
+    postMeta.append(postMetaData);
+    postMetaData.classList.add('post-meta__data');
+    // da associare ad author ==> name
+    let postMetaAuthor = document.createElement('div');
+    postMetaAuthor.classList.add('post-meta__author');
+    postMetaAuthor.innerHTML = element.author.name;
+    // da associare a created
+    let postMetaTime = document.createElement('div');
+    postMetaData.append(postMetaAuthor, postMetaTime);
+    postMetaTime.classList.add('post-meta__time');
+    postMetaTime.innerHTML = element.created;
+
+    // da associare a content
+    let postText = document.createElement('div');
+    post.append(postText);
+    postText.classList.add('post__text');
+    postText.innerHTML = element.content;
+    // da associare a media
+    let postImage = document.createElement('div');
+    post.append(postImage);
+    postImage.classList.add('post__image');
+    let image = document.createElement('img');
+    postImage.append(image);
+    image.setAttribute('src', element.media);
+
+
+    // PARTE FOOTER
+    let postFooter = document.createElement('div');
+    post.append(postFooter);
+    postFooter.classList.add('post__footer');
+    // likes components
+        let JSlikes = document.createElement('div');
+        postFooter.append(JSlikes);
+        JSlikes.classList.add('likes' ,'js-likes');
+        
+            let likedCTA = document.createElement('div');
+            JSlikes.append(likedCTA);
+            likedCTA.classList.add('likes__cta');
+            
+            let likeButton = document.createElement('a');
+            likedCTA.append(likeButton);
+            likeButton.classList.add('like-button', 'js-like-button');
+            
+                let likeButtonIcon = document.createElement('i');
+                likeButton.append(likeButtonIcon);
+                likeButtonIcon.classList.add('like-button__icon', 'fas', 'fa-thumbs-up');
+                let likeButtonLabel = document.createElement('span');
+                likeButton.append(likeButtonLabel);
+                likeButtonLabel.classList.add('like-button__label');
+                likeButtonLabel.innerHTML = ' Mi Piace';
+            let likeCounterContainer = document.createElement('div');
+            JSlikes.append(likeCounterContainer);
+            likeCounterContainer.innerHTML = 'Piace a ' + likeCounter + ' persone';
+            let likedPost = [];
+            likeButton.addEventListener('click', function(){
+
+                likeCounter++
+               
+                likeButtonLabel.classList.add('like-button--liked');
+
+
+                likedPosts.push(idPost);
+
+                console.log(likedPosts);
+         
+                
+                likeCounterContainer.innerHTML = 'Piace a ' + likeCounter + ' persone';
+                
+            });
+
+            
+            
+            
+})
+
+let likedPosts = [];
+
+
+
+
+
+
+
