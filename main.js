@@ -60,6 +60,8 @@ let postList = document.getElementById('container');
 
 let likeCounter = 0;
 
+let likedPosts = [];
+
 
 /********************************************************************
 // 'for each' to associate the list elements with the HTML elements
@@ -152,30 +154,32 @@ posts.forEach( (element) => {
                 likeButtonLabel.innerHTML = ' Mi Piace';
             let likeCounterContainer = document.createElement('div');
             JSlikes.append(likeCounterContainer);
-            likeCounterContainer.innerHTML = 'Piace a ' + likeCounter + ' persone';
-            let likedPost = [];
+            likeCounterContainer.innerHTML = 'Piace a ' + element.likes + ' persone';
+
             likeButton.addEventListener('click', function(){
 
-                likeCounter++
-               
-                likeButtonLabel.classList.add('like-button--liked');
+                if (likeCounter == 0 && likedPosts.includes(idPost)){
+                    
+                    likeButtonLabel.classList.remove('like-button--liked');
+                    likedPosts[likedPosts.indexOf(idPost)] = 0
+                } else if (likedPosts.includes(idPost)){
+                    likeCounter--;
+                    likeButtonLabel.classList.remove('like-button--liked');
+                    likedPosts[likedPosts.indexOf(idPost)] = 0
+                } else {
+                    likeCounter=0;
+                    likeCounter++;
+                    likeButtonLabel.classList.add('like-button--liked');
+                    likedPosts.push(idPost);
+                }
 
-
-                likedPosts.push(idPost);
-
-                console.log(likedPosts);
-         
-                
-                likeCounterContainer.innerHTML = 'Piace a ' + likeCounter + ' persone';
+                likeCounterContainer.innerHTML = 'Piace a ' + (element.likes + likeCounter) + ' persone';
                 
             });
-
-            
-            
-            
+   
 })
 
-let likedPosts = [];
+
 
 
 
