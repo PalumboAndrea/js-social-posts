@@ -124,8 +124,9 @@ posts.forEach( (element) => {
                 let likeButtonIcon = createEl('i', 'like-button__icon fas fa-thumbs-up', likeButton);
                 let likeButtonLabel = createEl('span', 'like-button__label', likeButton);
                 likeButtonLabel.innerHTML = ' Mi Piace';
-            let likeCounterContainer = createEl('div', '', JSlikes);
+            let likeCounterContainer = createEl('div', 'like-counter-container', JSlikes);
             likeCounterContainer.innerHTML = 'Piace a ' + element.likes + ' persone';
+            
 
             likeButton.addEventListener('click', function(){
                 if (likeCounter == 0 && likedPosts.includes(element.id)){
@@ -144,8 +145,6 @@ posts.forEach( (element) => {
                 likeCounterContainer.innerHTML = 'Piace a ' + (element.likes + likeCounter) + ' persone';
             });
 })
-
-
 
 
 
