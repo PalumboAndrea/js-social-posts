@@ -62,6 +62,12 @@ let likeCounter = 0;
 
 let likedPosts = [];
 
+function createEl (HTMLElementToCreate, className = '', parentElement){
+    let newElement = document.createElement(HTMLElementToCreate);
+    newElement.className = className;
+    parentElement.append(newElement);
+    return newElement;
+}
 
 /********************************************************************
 // 'for each' to associate the list elements with the HTML elements
@@ -69,114 +75,74 @@ let likedPosts = [];
 
 posts.forEach( (element) => {
 
-    let idPost = element.id;
-    
-    let post = document.createElement('div');
-    post.classList.add('post');
-    postList.append(post);
+    // in this way I can visualize the date in Italian format:
+    let fixDate = element.created.split('-');
+    fixDate = fixDate[2] + '-' + fixDate[1] + '-' + fixDate[0];
 
-    let postHeader = document.createElement('div');
-    postHeader.classList.add('post__header');
-    post.append(postHeader);
+    let post = createEl('div', 'post', postList);
 
-    let postMeta = document.createElement('div');
-    postMeta.classList.add('post-meta');
-    postHeader.append(postMeta);
+    let postHeader = createEl('div', 'post__header', post);
 
-    let postMetaIcon = document.createElement('div');
-    postMetaIcon.classList.add('post-meta__icon');
-    postMeta.append(postMetaIcon);
-    // da associare ad author ==> image
-    let profilePic = document.createElement('img');
-    postMetaIcon.append(profilePic);
-    profilePic.classList.add('profile-pic');
+    let postMeta = createEl('div', 'post-meta', postHeader);
+
+    let postMetaIcon = createEl('div', 'post-meta__icon', postMeta);
+
+    // associated to author.image
+    let profilePic = createEl('img', 'profile-pic', postMetaIcon);
     if (element.author.image !== null){
         profilePic.setAttribute('src', element.author.image);
     } else {
-        let profilePicNull = document.createElement('p');
-        profilePicNull.classList.add('profil-pic-null')
-        postMetaIcon.append(profilePicNull);
+        let profilePicNull = createEl('p', 'profil-pic-null', postMetaIcon);
         let initial = element.author.name.split(' ');
         profilePicNull.innerHTML = initial[0].charAt(0) + ' ' + initial[1].charAt(0);
     }
-   
 
-    let postMetaData = document.createElement('div');
-    postMeta.append(postMetaData);
-    postMetaData.classList.add('post-meta__data');
-    // da associare ad author ==> name
-    let postMetaAuthor = document.createElement('div');
-    postMetaAuthor.classList.add('post-meta__author');
+    let postMetaData = createEl('div', 'post-meta__data', postMeta);
+
+    // associated to author.name
+    let postMetaAuthor = createEl('div', 'post-meta__author', postMetaData);
     postMetaAuthor.innerHTML = element.author.name;
-    // da associare a created
-    let postMetaTime = document.createElement('div');
-    postMetaData.append(postMetaAuthor, postMetaTime);
-    postMetaTime.classList.add('post-meta__time');
-    postMetaTime.innerHTML = element.created;
+    // associated to created
+    let postMetaTime = createEl('div', 'post-meta__time', postMetaData);
+    postMetaTime.innerHTML = fixDate;
 
-    // da associare a content
-    let postText = document.createElement('div');
-    post.append(postText);
-    postText.classList.add('post__text');
+    // associated to content
+    let postText = createEl('div', 'post__text', post);
     postText.innerHTML = element.content;
-    // da associare a media
-    let postImage = document.createElement('div');
-    post.append(postImage);
-    postImage.classList.add('post__image');
-    let image = document.createElement('img');
-    postImage.append(image);
+    // associated to  media
+    let postImage = createEl('div', 'post__image', post);
+    let image = createEl('img', 'post__image', postImage);
     image.setAttribute('src', element.media);
 
-
-    // PARTE FOOTER
-    let postFooter = document.createElement('div');
-    post.append(postFooter);
-    postFooter.classList.add('post__footer');
+    // FOOTER PART
+    let postFooter = createEl('div', 'post__footer', post);
     // likes components
-        let JSlikes = document.createElement('div');
-        postFooter.append(JSlikes);
-        JSlikes.classList.add('likes' ,'js-likes');
+        let JSlikes = createEl('div', 'likes js-likes', postFooter);
         
-            let likedCTA = document.createElement('div');
-            JSlikes.append(likedCTA);
-            likedCTA.classList.add('likes__cta');
-            
-            let likeButton = document.createElement('a');
-            likedCTA.append(likeButton);
-            likeButton.classList.add('like-button', 'js-like-button');
-            
-                let likeButtonIcon = document.createElement('i');
-                likeButton.append(likeButtonIcon);
-                likeButtonIcon.classList.add('like-button__icon', 'fas', 'fa-thumbs-up');
-                let likeButtonLabel = document.createElement('span');
-                likeButton.append(likeButtonLabel);
-                likeButtonLabel.classList.add('like-button__label');
+            let likedCTA = createEl('div', 'likes__cta', JSlikes);
+            let likeButton = createEl('a', 'like-button js-like-button', likedCTA);
+                let likeButtonIcon = createEl('i', 'like-button__icon fas fa-thumbs-up', likeButton);
+                let likeButtonLabel = createEl('span', 'like-button__label', likeButton);
                 likeButtonLabel.innerHTML = ' Mi Piace';
-            let likeCounterContainer = document.createElement('div');
-            JSlikes.append(likeCounterContainer);
+            let likeCounterContainer = createEl('div', '', JSlikes);
             likeCounterContainer.innerHTML = 'Piace a ' + element.likes + ' persone';
 
             likeButton.addEventListener('click', function(){
-
-                if (likeCounter == 0 && likedPosts.includes(idPost)){
-                    
+                if (likeCounter == 0 && likedPosts.includes(element.id)){
                     likeButtonLabel.classList.remove('like-button--liked');
-                    likedPosts[likedPosts.indexOf(idPost)] = 0
-                } else if (likedPosts.includes(idPost)){
+                    likedPosts[likedPosts.indexOf(element.id)] = 0
+                } else if (likedPosts.includes(element.id)){
                     likeCounter--;
                     likeButtonLabel.classList.remove('like-button--liked');
-                    likedPosts[likedPosts.indexOf(idPost)] = 0
+                    likedPosts[likedPosts.indexOf(element.id)] = 0
                 } else {
                     likeCounter=0;
                     likeCounter++;
                     likeButtonLabel.classList.add('like-button--liked');
-                    likedPosts.push(idPost);
+                    likedPosts.push(element.id);
                 }
-
                 likeCounterContainer.innerHTML = 'Piace a ' + (element.likes + likeCounter) + ' persone';
-                
             });
-   
 })
 
 
